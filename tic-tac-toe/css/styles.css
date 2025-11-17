@@ -1,0 +1,150 @@
+/* Base Styles */
+body {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Custom Animations */
+@keyframes scale-in {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.animate-scale-in {
+    animation: scale-in 0.3s ease-out;
+}
+
+/* Cell Hover Effects */
+.cell {
+    transition: all 0.3s ease;
+}
+
+.cell:hover:not(.filled) {
+    transform: scale(1.05);
+}
+
+/* Winning Cell Effects */
+.winning-cell {
+    background: rgba(51, 13, 242, 0.4) !important;
+    border-color: #330df2 !important;
+    animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Status Messages */
+.status-winner-x {
+    color: #00ffff !important;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+.status-winner-o {
+    color: #ff00ff !important;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px #ff00ff;
+}
+
+.status-draw {
+    color: #fbbf24 !important;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* Player Marks */
+.player-x {
+    color: #00ffff;
+    text-shadow: 0 0 8px #00ffff;
+}
+
+.player-o {
+    color: #ff00ff;
+    text-shadow: 0 0 8px #ff00ff;
+}
+
+/* Background Effects */
+.game-background {
+    position: relative;
+}
+
+.game-background::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(51, 13, 242, 0.1) 0%,
+        rgba(255, 0, 255, 0.1) 100%
+    );
+    pointer-events: none;
+}
+
+/* Button Effects */
+.btn-new-game {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-new-game::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(51, 13, 242, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-new-game:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-new-game span {
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .player-mark {
+        font-size: 3rem !important;
+    }
+    
+    .status-winner-x,
+    .status-winner-o {
+        font-size: 1.25rem;
+    }
+}
+
+/* Accessibility */
+.cell:focus {
+    outline: 2px solid #330df2;
+    outline-offset: 2px;
+}
+
+/* Loading State */
+.game-loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Game Over Overlay */
+.game-over {
+    pointer-events: none;
+}
+
+.game-over .cell:not(.winning-cell) {
+    opacity: 0.5;
+}

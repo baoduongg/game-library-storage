@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="description" content="Modern Tic Tac Toe game with cyberpunk design"/>
+    <meta name="author" content="Digital Game Library"/>
+    <title>Digital Game Library - Tic Tac Toe</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    
+    <!-- Custom Styles -->
+    <link href="css/styles.css" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#330df2",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#131022",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                    boxShadow: {
+                        'neon-blue': '0 0 5px #330df2, 0 0 10px #330df2, 0 0 20px #330df2',
+                        'neon-pink': '0 0 5px #f0f, 0 0 10px #f0f, 0 0 20px #f0f',
+                    },
+                    keyframes: {
+                        pulse: {
+                          '0%, 100%': { opacity: 1, boxShadow: '0 0 2px #330df2' },
+                          '50%': { opacity: 0.8, boxShadow: '0 0 10px #330df2, 0 0 15px #330df2' },
+                        }
+                    },
+                    animation: {
+                        pulse: 'pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark">
+<div class="relative flex min-h-screen w-full flex-col font-display dark group/design-root overflow-x-hidden">
+<div class="absolute inset-0 h-full w-full bg-cover bg-center" data-alt="Futuristic cyberpunk cityscape with neon lights and rain" style='background-image: linear-gradient(rgba(19, 16, 35, 0.6) 0%, rgba(19, 16, 35, 0.9) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuB_jPWQOL_7pVUOwGL7jUJpMDy0z6UmXD0DzgfZ-EVJ1_MytPRJQOaDPrvHhbmXPN6bF6-eKPnedJiyLYF6ouyDp8_QDDmFtL-BC84zX_rlIM7lW9qahI-6QjjewBLzfYP6UjP9b3eb05P8qBOn14ARPutwLd-qAssbEvYdvV3_buuOXJSVbHqwZwGmIbz16cdX5XjUUV86u7KY_zvkzyLofAB4g-ptlHocrKJLf-5iqN1MJNo4ijH5EHfpLxBmQqzQsvQl-6T5z0mA");'></div>
+<div class="relative layout-container flex h-full grow flex-col">
+<div class="flex flex-1 items-center justify-center p-5">
+<div class="layout-content-container flex w-full max-w-lg flex-1 flex-col items-center">
+<div class="@container w-full">
+<div class="w-full">
+<div class="flex flex-col gap-6 rounded-lg border border-primary/20 bg-background-dark/50 p-6 shadow-2xl shadow-primary/10 backdrop-blur-sm @[480px]:gap-8 @[480px]:p-8">
+<div class="flex flex-col gap-2 text-center">
+<h1 class="text-3xl font-black leading-tight tracking-[-0.033em] text-white @[480px]:text-5xl">
+                                    TIC TAC TOE
+                                </h1>
+<h2 id="game-status" class="text-base font-normal leading-normal text-[#9a90cb] @[480px]:text-lg">
+                                    Player X's Turn
+                                </h2>
+</div>
+<div id="game-board" class="grid grid-cols-3 grid-rows-3 gap-2 aspect-square">
+<div class="cell flex items-center justify-center border-2 border-primary/50 bg-black/20 transition-all hover:bg-primary/20 cursor-pointer" data-index="0"></div>
+<div class="cell flex items-center justify-center border-2 border-primary/50 bg-black/20 transition-all hover:bg-primary/20 cursor-pointer" data-index="1"></div>
+<div class="cell flex items-center justify-center border-2 border-primary/50 bg-black/20 transition-all hover:bg-primary/20 cursor-pointer" data-index="2"></div>
+<div class="cell flex items-center justify-center border-2 border-primary/50 bg-black/20 transition-all hover:bg-primary/20 cursor-pointer" data-index="3"></div>
+<div class="cell flex items-center justify-center border-2 border-primary/50 bg-black/20 transition-all hover:bg-primary/20 cursor-pointer" data-index="4"></div>
+<div class="cell flex items-center justify-center border-2 border-primary/50 bg-black/20 transition-all hover:bg-primary/20 cursor-pointer" data-index="5"></div>
+<div class="cell flex items-center justify-center border-2 border-primary/50 bg-black/20 transition-all hover:bg-primary/20 cursor-pointer" data-index="6"></div>
+<div class="cell flex items-center justify-center border-2 border-primary/50 bg-black/20 transition-all hover:bg-primary/20 cursor-pointer" data-index="7"></div>
+<div class="cell flex items-center justify-center border-2 border-primary/50 bg-black/20 transition-all hover:bg-primary/20 cursor-pointer" data-index="8"></div>
+</div>
+<div class="flex flex-col gap-4 pt-4">
+<button id="new-game-btn" class="animate-pulse flex min-w-[84px] cursor-pointer items-center justify-center gap-3 overflow-hidden rounded-md border-2 border-primary/80 bg-primary/20 h-14 px-5 text-base font-bold leading-normal tracking-[0.015em] text-white transition-all hover:border-primary hover:bg-primary/30 hover:shadow-lg hover:shadow-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background-dark">
+<span class="truncate">New Game</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <!-- Game Logic -->
+    <script src="js/game.js"></script>
+
+</body></html>

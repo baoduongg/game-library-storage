@@ -1,0 +1,34 @@
+{
+  "name": "tic-tac-toe-digital-game-library",
+  "version": "1.0.0",
+  "description": "A modern, cyberpunk-themed Tic Tac Toe game with stunning neon effects",
+  "main": "index.html",
+  "scripts": {
+    "start": "open index.html",
+    "dev": "live-server --port=8080 --open=index.html",
+    "test": "echo \"No tests configured yet\""
+  },
+  "keywords": [
+    "tic-tac-toe",
+    "game",
+    "javascript",
+    "html5",
+    "css3",
+    "tailwindcss",
+    "cyberpunk",
+    "neon",
+    "web-game"
+  ],
+  "author": "Digital Game Library Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baoduongg/game-library-storage.git"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
