@@ -40,8 +40,27 @@ class TicTacToe {
     this.cells.forEach((cell) => {
       cell.addEventListener('click', (e) => this.handleCellClick(e));
     });
-    this.newGameBtn.addEventListener('click', () => this.resetGame());
+    this.newGameBtn.addEventListener('click', () => this.handleNewGameClick());
     this.updateStatus();
+  }
+
+  /**
+   * Handle New Game button click
+   */
+  handleNewGameClick() {
+    // Check if in multiplayer mode
+    if (
+      window.multiplayerManager &&
+      window.multiplayerManager.isMultiplayer()
+    ) {
+      alert(
+        'Cannot start new game in multiplayer mode. Please exit to the game library.'
+      );
+      return;
+    }
+
+    // Single player mode - reset normally
+    this.resetGame();
   }
 
   /**
@@ -54,6 +73,20 @@ class TicTacToe {
 
     const index = parseInt(cell.getAttribute('data-index'));
 
+    // Check if in multiplayer mode
+    if (
+      window.multiplayerManager &&
+      window.multiplayerManager.isMultiplayer()
+    ) {
+      // Use multiplayer move handler
+      const moveSuccess = window.multiplayerManager.makeMultiplayerMove(index);
+      if (!moveSuccess) {
+        console.log('Move not allowed in multiplayer');
+      }
+      return;
+    }
+
+    // Single player mode logic
     // Validate move
     if (!this.isValidMove(index)) {
       return;
