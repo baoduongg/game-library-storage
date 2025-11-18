@@ -165,17 +165,30 @@ class MultiplayerManager {
 
   /**
    * Update board UI from Firestore state
+   * Only updates cells that have changed to prevent flickering
    */
   updateBoardFromState(board) {
     const cells = document.querySelectorAll('.cell');
     board.forEach((mark, index) => {
-      if (cells[index] && mark) {
+      if (!cells[index]) return;
+
+      // Get current cell content
+      const currentMark =
+        cells[index].querySelector('.player-mark')?.textContent || '';
+
+      // Only update if the cell has changed
+      if (mark && mark !== currentMark) {
         const playerClass = mark === 'X' ? 'player-x' : 'player-o';
         cells[
           index
         ].innerHTML = `<span class="text-6xl font-bold ${playerClass} animate-scale-in player-mark">${mark}</span>`;
         cells[index].classList.add('filled');
         cells[index].classList.remove('hover:bg-primary/20', 'cursor-pointer');
+      } else if (!mark && currentMark) {
+        // Clear cell if mark was removed (for reset scenarios)
+        cells[index].innerHTML = '';
+        cells[index].className =
+          'cell flex items-center justify-center border-2 border-primary/50 bg-black/20 transition-all hover:bg-primary/20 cursor-pointer';
       }
     });
   }
@@ -242,15 +255,19 @@ class MultiplayerManager {
 
     let message = '';
     let statusClass = '';
+    let alertMessage = '';
 
     if (winner === 'draw') {
       message = "It's a Draw! 🤝";
+      alertMessage = "Game Over - It's a Draw!";
       statusClass = 'status-draw';
     } else if (winner === this.myEmail) {
       message = '🎉 You Won!';
+      alertMessage = '🎉 Congratulations! You Won!';
       statusClass = 'status-winner-x';
     } else {
       message = '😢 You Lost!';
+      alertMessage = '😢 Game Over - You Lost!';
       statusClass = 'status-winner-o';
     }
 
@@ -260,6 +277,11 @@ class MultiplayerManager {
     }
 
     console.log('🏁 Game ended:', message);
+
+    // Show alert after a short delay to let UI update first
+    setTimeout(() => {
+      alert(alertMessage);
+    }, 500);
   }
 
   /**
