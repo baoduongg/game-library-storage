@@ -12,6 +12,7 @@ class MultiplayerManager {
     this.unsubscribe = null;
     this.isMultiplayerMode = false;
     this.gameInstance = null;
+    this.gameEndHandled = false;
 
     // Listen for messages from parent window (React app)
     window.addEventListener('message', (event) => {
@@ -235,6 +236,7 @@ class MultiplayerManager {
   showMultiplayerUI(displayName) {
     const multiplayerInfo = document.getElementById('multiplayer-info');
     const playerNameEl = document.getElementById('player-name');
+    const newGameBtn = document.getElementById('new-game-btn');
 
     if (multiplayerInfo) {
       multiplayerInfo.style.display = 'block';
@@ -244,6 +246,11 @@ class MultiplayerManager {
       playerNameEl.textContent = `Playing as: ${displayName}`;
     }
 
+    // Hide New Game button in multiplayer mode
+    if (newGameBtn) {
+      newGameBtn.style.display = 'none';
+    }
+
     console.log('🎮 Multiplayer UI shown');
   }
 
@@ -251,23 +258,33 @@ class MultiplayerManager {
    * Handle game end
    */
   handleGameEnd(winner) {
+    // Prevent multiple calls
+    if (this.gameEndHandled) {
+      return;
+    }
+    this.gameEndHandled = true;
+
     const gameStatus = document.getElementById('game-status');
 
     let message = '';
     let statusClass = '';
-    let alertMessage = '';
+    let modalTitle = '';
+    let modalMessage = '';
 
     if (winner === 'draw') {
       message = "It's a Draw! 🤝";
-      alertMessage = "Game Over - It's a Draw!";
+      modalTitle = "It's a Draw!";
+      modalMessage = 'Good game! No one wins this time.';
       statusClass = 'status-draw';
     } else if (winner === this.myEmail) {
       message = '🎉 You Won!';
-      alertMessage = '🎉 Congratulations! You Won!';
+      modalTitle = 'Congratulations!';
+      modalMessage = 'You won this game! Well played!';
       statusClass = 'status-winner-x';
     } else {
       message = '😢 You Lost!';
-      alertMessage = '😢 Game Over - You Lost!';
+      modalTitle = 'Game Over';
+      modalMessage = 'You lost this game. Better luck next time!';
       statusClass = 'status-winner-o';
     }
 
@@ -278,10 +295,56 @@ class MultiplayerManager {
 
     console.log('🏁 Game ended:', message);
 
-    // Show alert after a short delay to let UI update first
+    // Show modal after a short delay to let UI update first
     setTimeout(() => {
-      alert(alertMessage);
+      this.showGameEndModal(modalTitle, modalMessage, statusClass);
     }, 500);
+  }
+
+  /**
+   * Show game end modal
+   */
+  showGameEndModal(title, message, statusClass) {
+    // Create modal HTML
+    const modalHTML = `
+      <div id="game-end-modal" class="game-end-modal">
+        <div class="game-end-modal-overlay"></div>
+        <div class="game-end-modal-content">
+          <div class="game-end-modal-header ${statusClass}">
+            <h2>${title}</h2>
+          </div>
+          <div class="game-end-modal-body">
+            <p>${message}</p>
+          </div>
+          <div class="game-end-modal-footer">
+            <button id="close-modal-btn" class="modal-close-btn">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Add modal to body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // Add event listeners
+    const modal = document.getElementById('game-end-modal');
+    const closeBtn = document.getElementById('close-modal-btn');
+    const overlay = modal.querySelector('.game-end-modal-overlay');
+
+    closeBtn.addEventListener('click', () => this.closeGameEndModal());
+    overlay.addEventListener('click', () => this.closeGameEndModal());
+  }
+
+  /**
+   * Close game end modal
+   */
+  closeGameEndModal() {
+    const modal = document.getElementById('game-end-modal');
+    if (modal) {
+      modal.remove();
+    }
   }
 
   /**
