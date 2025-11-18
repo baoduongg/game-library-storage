@@ -54,6 +54,20 @@ class TicTacToe {
 
     const index = parseInt(cell.getAttribute('data-index'));
 
+    // Check if in multiplayer mode
+    if (
+      window.multiplayerManager &&
+      window.multiplayerManager.isMultiplayer()
+    ) {
+      // Use multiplayer move handler
+      const moveSuccess = window.multiplayerManager.makeMultiplayerMove(index);
+      if (!moveSuccess) {
+        console.log('Move not allowed in multiplayer');
+      }
+      return;
+    }
+
+    // Single player mode logic
     // Validate move
     if (!this.isValidMove(index)) {
       return;
